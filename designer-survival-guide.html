@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設計師接需求生存術｜職人互動生存指南</title>
+    <meta name="description" content="設計師接案流程互動指南，涵蓋需求訪談、改稿管理、報價與合作確認。">
+    <meta name="keywords" content="設計師,接案,需求訪談,改稿,報價,合作流程">
+    <meta name="robots" content="index,follow">
+    <meta property="og:title" content="設計師接需求生存術｜職人互動生存指南">
+    <meta property="og:description" content="設計師接案流程互動指南，涵蓋需求訪談、改稿管理、報價與合作確認。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="og-cover.png">
+    
+    <!-- Google Analytics (GA4) Stub -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+
+        // Custom logging helper to visualize tracking in action
+        function logGA4Event(eventName, params) {
+            console.log(`[GA4 Event] ${eventName}:`, params);
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, params);
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #0a0a0a;
+            --bg-card: #121212;
+            --bg-card-hover: #1a1a1a;
+            --accent: #b8f53c;
+            --accent-glow: rgba(184, 245, 60, 0.2);
+            --text-heading: #ffffff;
+            --text-body: #aaaaaa;
+            --text-muted: #666666;
+            --border-color: #222222;
+            --border-focus: #444444;
+            --font-stack: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            font-family: var(--font-stack);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Presentation Container */
+        .presentation-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Slide Styles */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.98);
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 3rem 10% 6rem 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        /* Typography */
+        h1.slide-title {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            color: var(--text-heading);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        h1.slide-title span {
+            color: var(--accent);
+        }
+
+        h2.slide-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 400;
+            color: var(--text-body);
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+
+        p.slide-desc {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-body);
+            max-width: 700px;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /* Components & Interactive Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #333;
+            background: var(--bg-card-hover);
+        }
+
+        .card.accent-border {
+            border-color: rgba(184, 245, 60, 0.3);
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .tag-wrong { background: #3a1a1a; color: #ff6b6b; }
+        .tag-right { background: #1a3a1a; color: var(--accent); }
+
+        /* Interactive Tabs */
+        .tab-container {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 1rem;
+        }
+
+        .tab-headers {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        /* Checklist Styles */
+        .checklist-wrapper {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #1a1a1a;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: width 0.3s ease;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover {
+            border-color: #333;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 1.2rem;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .checklist-item input[type="checkbox"]:checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .checklist-item input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .checklist-item.checked {
+            border-color: rgba(184, 245, 60, 0.2);
+            background: rgba(184, 245, 60, 0.02);
+        }
+
+        .checklist-item.checked span {
+            color: var(--text-heading);
+            text-decoration: none;
+        }
+
+        /* Script/Template Box */
+        .script-box {
+            background: #111;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .script-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-line;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #000000;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-heading);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: #444;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+        }
+
+        /* Flowchart Styles */
+        .flowchart {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .flow-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            width: 16%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .flow-node:hover, .flow-node.active {
+            border-color: var(--accent);
+            background: rgba(184, 245, 60, 0.03);
+        }
+
+        .flow-node h3 {
+            font-size: 1rem;
+            color: var(--text-heading);
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-node p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .flow-arrow {
+            color: var(--border-color);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .flow-detail-panel {
+            margin-top: 2rem;
+            background: #111;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 80px;
+        }
+
+        /* Form Styles */
+        .interactive-form {
+            width: 100%;
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .interactive-form label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        .interactive-form input, .interactive-form textarea {
+            background: #111;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: var(--font-stack);
+            transition: border-color 0.2s;
+        }
+
+        .interactive-form input:focus, .interactive-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .checkbox-group {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .checkbox-label input {
+            accent-color: var(--accent);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Navigation Controls Overlay */
+        .controls-layer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(transparent, rgba(10,10,10,0.95) 50%);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .controls-left, .controls-right {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-btn {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: #111;
+        }
+
+        .slide-indicator {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .global-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #141414;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 650px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #ccc;
+            max-height: 60vh;
+            overflow-y: auto;
+            margin-bottom: 2rem;
+        }
+
+        .report-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .report-label {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .report-text {
+            background: #0f0f0f;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #1f1f1f;
+        }
+
+        /* Utility animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Fixes */
+        @media(max-width: 900px) {
+            .grid-2, .interactive-form {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .flowchart {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .flow-node {
+                width: 100%;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 0.2rem 0;
+            }
+            .slide {
+                padding: 2rem 5% 5rem 5%;
+            }
+            .controls-layer {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="global-progress" id="globalProgressBar"></div>
+
+    <div class="presentation-container">
+        
+        <!-- Slide 1: 開場 -->
+        <section class="slide active" id="slide-1">
+            <h1 class="slide-title">設計師接需求<br><span>生存術</span></h1>
+            <h2 class="slide-subtitle">從通靈通到吐，到精準控場的 11 頁互動生存指南。專為拒絕無限改稿、渴望掌握主導權的接案設計師打造。</h2>
+            <button class="btn" onclick="nextSlide()">開始學習生存術 →</button>
+        </section>
+
+        <!-- Slide 2: 爆炸場景 -->
+        <section class="slide" id="slide-2">
+            <h1 class="slide-title">設計不是從畫面開始<br>而是從<span>邊界</span>開始</h1>
+            <h2 class="slide-subtitle">「改稿改到懷疑人生？」「客戶說這不是他要的感覺？」崩潰的終點，往往源自於極度模糊的起點。拒絕盲目開工，你必須先築起專業防線。</h2>
+            <div class="highlight-box">
+                <p class="slide-desc" style="font-weight: 600; color: #fff;">生存法則第一條：</p>
+                <p class="slide-desc">不要急著打開 Photoshop 或 Figma。在尚未釐清商業目標前畫的每一條線，都是未來免費加班的隱患。</p>
+            </div>
+        </section>
+
+        <!-- Slide 3: 需求模糊 -->
+        <section class="slide" id="slide-3">
+            <h1 class="slide-title">先確認<span>目標</span><br>不先問喜好</h1>
+            <h2 class="slide-subtitle">點擊下方頁籤，對比兩種截然不同的問法對專案推進產生的巨大影響。</h2>
+            
+            <div class="tab-container">
+                <div class="tab-headers">
+                    <button class="tab-btn active" onclick="switchTab(this, 'tab-fog')">常犯錯誤 (Fog)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'tab-focus')">專業對焦 (Focus)</button>
+                </div>
+                <div id="tab-fog" class="tab-content active">
+                    <div class="card" style="border-color: #3a1a1a;">
+                        <span class="card-tag tag-wrong">錯誤問法</span>
+                        <p class="slide-desc" style="color: #fff; font-weight: 600;">「你喜歡什麼顏色？想要什麼風格？」</p>
+                        <p class="slide-desc">後果：客戶會帶入極度主觀的個人美感，導致改稿時陷入「感覺不對」的無限輪迴。美感是主觀的，主觀是無法對焦的。</p>
+                    </div>
+                </div>
+                <div id="tab-focus" class="tab-content">
+                    <div class="card" style="border-color: rgba(184,245,60,0.3)">
+                        <span class="card-tag tag-right">專業思維</span>
+                        <p class="slide-desc" style="color: #fff; font-weight: 600;">「這次設計要解決什麼商業問題？誰是核心目標受眾？」</p>
+                        <p class="slide-desc">效果：將主觀的「美醜爭論」轉化為客觀的「商業策略」。當未來的修改偏離目標受眾時，你能用理性數據與邏輯說服客戶。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: 收斂技巧 -->
+        <section class="slide" id="slide-4">
+            <h1 class="slide-title">把開放題<br>變成<span>選擇題</span></h1>
+            <h2 class="slide-subtitle">當客戶說「隨便，都可以，聽你專業的」時，這不是信任，而是把責任推給你的陷阱。</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color:#fff; margin-bottom:0.8rem;">致命的開放問法</h3>
+                    <p class="slide-desc" style="font-size:0.95rem;">「你想走什麼方向？」<br>客戶腦中是一片空白，只能在看到完成品後才開始挑剔。</p>
+                </div>
+                <div class="card accent-border">
+                    <h3 style="color:var(--accent); margin-bottom:0.8rem;">高效的選擇提案</h3>
+                    <p class="slide-desc" style="font-size:0.95rem;">「根據目標，我們有三個可行方案：A 方案強調科技未來感、B 方案側重高質感極簡、C 方案主打溫暖人文。您傾向哪一種？」</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: 需求訪談 Checklist -->
+        <section class="slide" id="slide-5">
+            <h1 class="slide-title">需求訪談 <span>Checklist</span></h1>
+            <h2 class="slide-subtitle">在正式動手前，請確認這 6 項關鍵黃金指標是否皆已落地。</h2>
+            
+            <div class="checklist-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar" id="checklistProgress"></div>
+                </div>
+                
+                <div id="checklistItems">
+                    <label class="checklist-item">
+                        <input type="checkbox" data-id="1" onchange="updateChecklist()">
+                        <span>1. 確認設計最終目標 (解決什麼商業問題、達成何種轉換)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-id="2" onchange="updateChecklist()">
+                        <span>2. 確認主要使用者 (目標客群、User Persona 精準畫像)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-id="3" onchange="updateChecklist()">
+                        <span>3. 取得至少 3 個視覺參考 (具體風格、競品或同業對照組)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-id="4" onchange="updateChecklist()">
+                        <span>4. 確認不要的方向 (明確避雷針，如：拒絕飽和度過高的色彩)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-id="5" onchange="updateChecklist()">
+                        <span>5. 確認交付格式與時程 (包含原始檔歸屬、各階段 Deadline)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-id="6" onchange="updateChecklist()">
+                        <span>6. 需求確認書已取得書面確認 (Mail、通訊軟體之文字存證)</span>
+                    </label>
+                </div>
+                
+                <button class="btn" style="margin-top: 1rem;" onclick="generateFocusReport()">產生對焦報告 ⚡</button>
+            </div>
+        </section>
+
+        <!-- Slide 6: 開場話術模板 -->
+        <section class="slide" id="slide-6">
+            <h1 class="slide-title">開場話術：<br><span>建立專業框架</span></h1>
+            <h2 class="slide-subtitle">第一次開會時，用這段話主導局勢，讓客戶明白你是顧問，而非聽命行事的工具人。</h2>
+            
+            <div class="script-box">
+                <p class="script-text" id="script-opening">「謝謝您邀請我參與這次的專案。為了確保最終的設計能精準符合您的商業目標，並且在預算與時程內完美落地，在動手畫圖之前，我們會先花大約 15 分鐘進行一個簡單的需求對焦，確認我們的目標與受眾是一致的。我們現在就開始吧？」</p>
+            </div>
+            <button class="btn" onclick="copyScript('opening', 'script-opening')">複製話術模板 📋</button>
+        </section>
+
+        <!-- Slide 7: 無限改稿風險 -->
+        <section class="slide" id="slide-7">
+            <h1 class="slide-title">修改 ≠ 重做<br>建立<span>修改邊界</span></h1>
+            <h2 class="slide-subtitle">為什麼會陷入無限改稿？因為你沒有與客戶定義「什麼是修改」。</h2>
+            <div class="highlight-box">
+                <p class="slide-desc" style="color:#fff; font-weight:700;">核心鐵律：</p>
+                <p class="slide-desc"><strong>修改：</strong>是在既定架構與風格內，進行字體、色彩飽和度、局部間距或文字內容的優化與微調。</p>
+                <p class="slide-desc"><strong>重做：</strong>是推翻原本協議的風格、全面更換版面結構、或是增加全新的功能與內容。這屬於「範疇蔓延」，必須重新計價。</p>
+            </div>
+        </section>
+
+        <!-- Slide 8: 改稿流程圖 -->
+        <section class="slide" id="slide-8">
+            <h1 class="slide-title">標準<span>改稿流程圖</span></h1>
+            <h2 class="slide-subtitle">點擊流程節點，查看各階段應锁定的邊界核心任務。</h2>
+            
+            <div class="flowchart">
+                <div class="flow-node active" onclick="showFlowDetail(1, this)">
+                    <h3>1. 需求確認</h3>
+                    <p>封鎖邊界</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showFlowDetail(2, this)">
+                    <h3>2. 第一版提案</h3>
+                    <p>確認大風格</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showFlowDetail(3, this)">
+                    <h3>3. 統整回饋</h3>
+                    <p>限時、限量</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showFlowDetail(4, this)">
+                    <h3>4. 第二版優化</h3>
+                    <p>細節對焦</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showFlowDetail(5, this)">
+                    <h3>5. 定稿交付</h3>
+                    <p>專案結案</p>
+                </div>
+            </div>
+
+            <div class="flow-detail-panel" id="flowDetailContent">
+                <p style="color:var(--accent); font-weight:700; margin-bottom:0.5rem;">階段 1：需求確認</p>
+                <p class="slide-desc" style="font-size:0.95rem; margin-bottom:0;">在此階段，雙方必須對 Checklist 達成共識並簽字。此時封鎖所有大方向，確保後續提案有據可依。</p>
+            </div>
+        </section>
+
+        <!-- Slide 9: 加價話術 -->
+        <section class="slide" id="slide-9">
+            <h1 class="slide-title">超出範圍的<br><span>加價話術</span></h1>
+            <h2 class="slide-subtitle">面對客戶突如其來、超出合約範圍的新要求，如何優雅且堅定地談錢？</h2>
+            
+            <div class="script-box">
+                <p class="script-text" id="script-pricing">「這個方向確實非常棒，不過這超出了我們當初在《需求確認書》中約定的範圍（屬於全新的結構調整/功能開發）。為了不耽誤原本的合約進度，我建議將這個新想法列為第二階段優化。若您希望在第一階段直接加入，我會為您評估額外的工時與費用，並提供一份追加預算單給您確認，您看這樣合適嗎？」</p>
+            </div>
+            <button class="btn" onclick="copyScript('pricing', 'script-pricing')">複製加價話術 📋</button>
+        </section>
+
+        <!-- Slide 10: 正式合作確認 -->
+        <section class="slide" id="slide-10">
+            <h1 class="slide-title">正式<span>合作確認</span></h1>
+            <h2 class="slide-subtitle">填寫以下專案核心參數，一鍵生成透明、清晰的合作確認摘要。</h2>
+            
+            <div class="interactive-form">
+                <div class="form-group">
+                    <label>委託方名稱 (客戶名稱)</label>
+                    <input type="text" id="formClient" placeholder="例如：甲乙方科技有限公司">
+                </div>
+                <div class="form-group">
+                    <label>專案名稱</label>
+                    <input type="text" id="formProject" placeholder="例如：品牌官網 UI/UX 設計">
+                </div>
+                <div class="form-group">
+                    <label>預計交付時程</label>
+                    <input type="text" id="formTimeline" placeholder="例如：2026/08/30 之前">
+                </div>
+                <div class="form-group">
+                    <label>約定修改輪數</label>
+                    <input type="number" id="formRounds" value="2" min="1">
+                </div>
+                <div class="form-group full-width">
+                    <label>特殊備註 / 交付規格</label>
+                    <textarea id="formNotes" rows="2" placeholder="例如：交付 Figma 原始檔、不含插畫繪製..."></textarea>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="checkScope"> 雙方已明確確認本次設計之交付範圍與邊界
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="checkTerms"> 同意超出範圍之修改將啟動變更程序並額外計費
+                    </label>
+                </div>
+                <div class="form-group full-width">
+                    <button class="btn" style="width: fit-content;" onclick="generateContract()">產生合作確認書 ✨</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: 總結 -->
+        <section class="slide" id="slide-11">
+            <h1 class="slide-title">專業不是無限配合<br>而是讓<span>合作變清楚</span></h1>
+            <h2 class="slide-subtitle">優秀的設計師用作品說話，頂尖的設計師用「流程」控場。當你建立起邊界，你贏得的不僅是時間與尊重，更是真正的高溢價底氣。</h2>
+            <div class="highlight-box" style="margin-top: 3rem;">
+                <p class="slide-desc" style="color: var(--accent); font-weight: 700; font-size: 1.3rem;">掌控節奏，做自己專案的主人。</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Controls Overlay Layer -->
+    <div class="controls-layer">
+        <div class="controls-left">
+            <span class="slide-indicator" id="slideIndicator">1 / 11</span>
+        </div>
+        <div class="controls-right">
+            <button class="nav-btn" onclick="prevSlide()" title="上一頁 (左方向鍵)">←</button>
+            <button class="nav-btn" onclick="nextSlide()" title="下一頁 (右方向鍵)">→</button>
+        </div>
+    </div>
+
+    <!-- Universal Modal Popup -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">報告產生器</h3>
+                <button class="modal-close" onclick="toggleModal(false)">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content injected via JS -->
+            </div>
+            <div style="display:flex; gap:1rem; justify-content:flex-end;">
+                <button class="btn btn-secondary" onclick="toggleModal(false)">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State Management
+        let currentSlideIndex = 1;
+        const totalSlides = 11;
+
+        // Flowchart Data Mapping
+        const flowDetails = {
+            1: {
+                title: "階段 1：需求確認",
+                desc: "在此階段，雙方必須對 Checklist 達成共識並簽字。此時封鎖所有大方向，確保後續提案有據可依。"
+            },
+            2: {
+                title: "階段 2：第一版提案",
+                desc: "依據對焦結果產出主要風格提案。此時主要確認「視覺調性、整體結構與排版方向」，不糾結局部文字。"
+            },
+            3: {
+                title: "階段 3：統整回饋",
+                desc: "要求客戶在約定期限內，召集內部利害關係人，將所有修改意見「統整為單一文件」一次性提出，拒絕零星修改。"
+            },
+            4: {
+                title: "階段 4：第二版優化",
+                desc: "根據統整的回饋文件進行細節調整與精準修飾。此階段不接受任何「推翻第一版風格」的大型變更。"
+            },
+            5: {
+                title: "階段 5：定稿交付",
+                desc: "進行最後的細微校對，確認無誤後輸出約定格式。收取尾款，移交檔案，正式結案歸檔。"
+            }
+        };
+
+        // Initialize Global Progress Bar & Indicator
+        function updateGlobalUI() {
+            document.getElementById('slideIndicator').innerText = `${currentSlideIndex} / ${totalSlides}`;
+            const percentage = ((currentSlideIndex - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('globalProgressBar').style.width = `${percentage}%`;
+        }
+
+        // Slide Navigation Functions
+        function showSlide(index) {
+            if (index < 1 || index > totalSlides) return;
+            
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-${index}`).classList.add('active');
+            
+            currentSlideIndex = index;
+            updateGlobalUI();
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 1) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        // Keyboard Controls with Focus Protection Constraint
+        document.addEventListener('keydown', function(e) {
+            // Rule: Interactive elements shouldn't trigger slide switches via left/right arrows
+            const activeElem = document.activeElement;
+            const isInputField = activeElem && (
+                activeElem.tagName === 'INPUT' || 
+                activeElem.tagName === 'TEXTAREA' || 
+                activeElem.tagName === 'SELECT' || 
+                activeElem.isContentEditable
+            );
+
+            if (isInputField) {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    return; // Prevent slide navigation inside input
+                }
+            }
+
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Tabs Interactivity (Slide 3)
+        function switchTab(btn, tabId) {
+            const container = btn.closest('.tab-container');
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            const tabName = tabId === 'tab-fog' ? 'fog' : 'loop'; // map tab names
+            logGA4Event('tab_switch', { tab_name: tabName });
+        }
+
+        // Checklist Logic (Slide 5)
+        const checklistTexts = {
+            1: "確認設計最終目標",
+            2: "確認主要使用者",
+            3: "取得至少 3 個視覺參考",
+            4: "確認不要的方向",
+            5: "確認交付格式與時程",
+            6: "需求確認書已取得書面確認"
+        };
+
+        function updateChecklist() {
+            const checkboxes = document.querySelectorAll('#checklistItems input[type="checkbox"]');
+            let checkedCount = 0;
+            
+            checkboxes.forEach(cb => {
+                const label = cb.closest('.checklist-item');
+                if (cb.checked) {
+                    label.classList.add('checked');
+                    checkedCount++;
+                } else {
+                    label.classList.remove('checked');
+                }
+            });
+
+            const progressPercentage = (checkedCount / checkboxes.length) * 100;
+            document.getElementById('checklistProgress').style.width = `${progressPercentage}%`;
+        }
+
+        function generateFocusReport() {
+            const checkboxes = document.querySelectorAll('#checklistItems input[type="checkbox"]');
+            let completed = [];
+            let pending = [];
+            
+            checkboxes.forEach(cb => {
+                const id = cb.getAttribute('data-id');
+                const txt = checklistTexts[id];
+                if (cb.checked) {
+                    completed.push(txt);
+                    logGA4Event('checklist_item', { item_id: `item_${id}`, checked: true });
+                } else {
+                    pending.push(txt);
+                    logGA4Event('checklist_item', { item_id: `item_${id}`, checked: false });
+                }
+            });
+
+            let score = completed.length;
+            let assessment = "";
+            let recommendation = "";
+
+            if (score <= 2) {
+                assessment = "🔴 極度危險（需求空洞化）";
+                recommendation = "此時開工等於閉眼開車！請立即暫停項目，約客戶進行第一次工作坊，把目標與客群逼問出來，否則後續必面臨推翻重做的黑洞。";
+            } else if (score <= 5) {
+                assessment = "🟡 潛在風險（細節待補齊）";
+                recommendation = "已有初步共識，但缺乏關鍵防線（如交付格式或書面確認）。請用 Email 條列未竟事項，要求客戶回信確認後，方可啟動設計。";
+            } else {
+                assessment = "🟢 邊界清晰（完美防禦狀態）";
+                recommendation = "專案架構非常健康！邊界完全鎖定，可立即啟動第一版提案，並嚴格執行兩輪修改限制。";
+            }
+
+            let html = `
+                <div class="report-section">
+                    <div class="report-label">需求清晰度評估</div>
+                    <div class="report-text" style="font-weight:700; color:#fff;">${assessment} (得分: ${score}/6)</div>
+                </div>
+                <div class="report-section">
+                    <div class="report-label">已完成對焦項目</div>
+                    <div class="report-text">
+                        ${completed.length ? completed.map(i => `• ${i}<br>`).join('') : '暫無項目'}
+                    </div>
+                </div>
+                <div class="report-section">
+                    <div class="report-label">尚需補齊之防線</div>
+                    <div class="report-text" style="color: ${pending.length ? '#ff6b6b' : '#aaa'}">
+                        ${pending.length ? pending.map(i => `× ${i}<br>`).join('') : '✓ 全部防線已建立'}
+                    </div>
+                </div>
+                <div class="report-section">
+                    <div class="report-label">生存下一步建議</div>
+                    <div class="report-text">${recommendation}</div>
+                </div>
+            `;
+
+            document.getElementById('modalTitle').innerText = "📊 需求訪談對焦報告";
+            document.getElementById('modalBody').innerHTML = html;
+            toggleModal(true);
+        }
+
+        // Script Copy Feature (Slides 6 & 9)
+        function copyScript(scriptId, elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('話術範本已成功複製至剪貼簿！');
+                logGA4Event('copy_script', { script_id: scriptId });
+            }).catch(err => {
+                console.error('無法複製: ', err);
+            });
+        }
+
+        // Flowchart Detailing Logic (Slide 8)
+        function showFlowDetail(stageId, element) {
+            document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
+            element.classList.add('active');
+
+            const data = flowDetails[stageId];
+            let html = `
+                <p style="color:var(--accent); font-weight:700; margin-bottom:0.5rem;">${data.title}</p>
+                <p class="slide-desc" style="font-size:0.95rem; margin-bottom:0;">${data.desc}</p>
+            `;
+            document.getElementById('flowDetailContent').innerHTML = html;
+        }
+
+        // Contract Form Generator (Slide 10)
+        function generateContract() {
+            const client = document.getElementById('formClient').value || "［未填寫委託方］";
+            const project = document.getElementById('formProject').value || "［未填寫專案名稱］";
+            const timeline = document.getElementById('formTimeline').value || "［未填寫時程］";
+            const rounds = document.getElementById('formRounds').value || "2";
+            const notes = document.getElementById('formNotes').value || "無特別備註";
+            
+            const scopeChecked = document.getElementById('checkScope').checked;
+            const termsChecked = document.getElementById('checkTerms').checked;
+
+            let warningBanner = "";
+            if (!scopeChecked || !termsChecked) {
+                warningBanner = `<div class="report-text" style="background:#3a1a1a; color:#ff6b6b; border-color:#552222; margin-bottom:1rem; font-weight:600;">⚠️ 警告：下方勾選方塊未完全確認，此確認書在法律與流程實踐上仍具備高度改稿風險。</div>`;
+            }
+
+            let html = `
+                ${warningBanner}
+                <div class="report-section">
+                    <div class="report-label">專案備忘錄摘要 MEMORANDUM</div>
+                    <div class="report-text" style="font-family: monospace; line-height:1.7; color:#fff; font-size:0.9rem;">
+                        <strong>立書人：</strong>${client}（以下簡稱甲方）<br>
+                        <strong>設計執行：</strong>職人設計團隊（以下簡稱乙方）<br><br>
+                        雙方就專案<strong>【${project}】</strong>達成以下合作共識：<br>
+                        1. 預計時程：本專案預計於 ${timeline} 前完成交付。<br>
+                        2. 修改限制：乙方提供 ${rounds} 輪架構內之細部修改。超出的輪數或推翻風格之修改，將以變更程序另行報價。<br>
+                        3. 交付規格：${notes}<br><br>
+                        -----------------------------------------<br>
+                        甲方確認狀態：${scopeChecked ? '✅ 已確認交付範疇' : '❌ 範疇未定'}<br>
+                        條款同意狀態：${termsChecked ? '✅ 已同意變更計費' : '❌ 未同意變更條款'}<br>
+                    </div>
+                </div>
+                <p style="font-size:0.85rem; color:var(--text-muted);">提示：可全選複製此文字，作為 Email 或合約附約之正式對焦文本。</p>
+            `;
+
+            document.getElementById('modalTitle').innerText = "📜 正式合作確認書摘要";
+            document.getElementById('modalBody').innerHTML = html;
+            toggleModal(true);
+        }
+
+        // Modal Utility Functions
+        function toggleModal(show) {
+            const modal = document.getElementById('modalOverlay');
+            if (show) {
+                modal.classList.add('active');
+            } else {
+                modal.classList.remove('active');
+            }
+        }
+
+        function closeModal(event) {
+            toggleModal(false);
+        }
+
+        // Setup Init UI state
+        updateGlobalUI();
+    </script>
+</body>
+</html>
